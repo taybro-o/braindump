@@ -5,6 +5,7 @@
 // Manages database connection state and handles all CRUD operations
 // on the MongoDB collection. Auto-seeds mock data if the collection is empty.
 
+import 'package:flutter/foundation.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import '../config.dart';
 import '../models/flash_card.dart';
@@ -37,6 +38,7 @@ class DatabaseService {
     // Check for unconfigured placeholder connection string
     if (MongoConfig.mongoDbUrl.contains('<username>') ||
         MongoConfig.mongoDbUrl.contains('<password>') ||
+        MongoConfig.mongoDbUrl.contains('<db_password>') ||
         MongoConfig.mongoDbUrl.contains('cluster0.xxxxxxx')) {
       _connectionError =
           'Connection string is not configured. Please edit lib/config.dart with your MongoDB Atlas credentials.';
@@ -77,7 +79,7 @@ class DatabaseService {
       }
     } catch (e) {
       // Log seeding error but don't fail the connection
-      print('Database seeding failed: $e');
+      debugPrint('Database seeding failed: $e');
     }
   }
 
